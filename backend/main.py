@@ -2,12 +2,16 @@ from typing import Optional
 
 from fastapi import FastAPI
 
+import CoolProp.CoolProp as CP
+
 app = FastAPI()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/pcrit/{fluid}")
+def read_root(fluid: str):
+    pressure_at_critical_point = CP.PropsSI(fluid,'pcrit')
+
+    return {"pressure_at_critical_point": pressure_at_critical_point}
 
 
 @app.get("/items/{item_id}")
